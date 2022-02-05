@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Forge - HTB // FoushGX</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.80.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Muhammed Foaad" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://foushgx.github.io/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Forge - HTB"/>
+<meta name="twitter:description" content="Hello Everyone,Today, I&rsquo;ll show you how i pwned Forge machine in details.   Introduction  what you will learn from this machine. SSRF, FTP-web-browser, SSH-keys, Python-debugger.   First Don&rsquo;t forget to add IP of the machine to /etc/hosts
+$ sudo echo &quot;10.10.11.111&quot; &gt;&gt; /etc/hosts
+ Recon   First thing to do is to check for open ports using nmap     Let&rsquo;s Check port 80/tcp website   Ok!"/>
+
+    <meta property="og:title" content="Forge - HTB" />
+<meta property="og:description" content="Hello Everyone,Today, I&rsquo;ll show you how i pwned Forge machine in details.   Introduction  what you will learn from this machine. SSRF, FTP-web-browser, SSH-keys, Python-debugger.   First Don&rsquo;t forget to add IP of the machine to /etc/hosts
+$ sudo echo &quot;10.10.11.111&quot; &gt;&gt; /etc/hosts
+ Recon   First thing to do is to check for open ports using nmap     Let&rsquo;s Check port 80/tcp website   Ok!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://foushgx.github.io/htb/forge/" />
+<meta property="article:published_time" content="2022-01-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-01-22T00:00:00+00:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://foushgx.github.io/"><img class="app-header-avatar" src="/Profile.jpg" alt="Muhammed Foaad" /></a>
+      <h1>FoushGX</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             <br> 
+          
+          <a class="app-header-menu-item" href="/about/">about</a>
+             <br> 
+          
+          <a class="app-header-menu-item" href="/htb/">Hack The Box</a>
+             <br> 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p>Jr.Penetration Tester | CTF Player</p>
+      <div class="app-header-social">
+        
+          <a href="https://facebook.com/foushgx" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>Facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.linkedin.com/in/foushgx" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>LinkedIn</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/foushgx" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://github.com/foushgx" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Forge - HTB</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Jan 22, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://foushgx.github.io/tags/htb-medium/">HTB-Medium</a>
+              <a class="tag" href="https://foushgx.github.io/tags/walkthrough/">Walkthrough</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h3 id="hello-everyonetoday-ill-show-you-how-i-pwned-forge-machine-in-details">Hello Everyone,Today, I&rsquo;ll show you how i pwned <code>Forge</code> machine in details.</h3>
+<figure>
+    <img src="/Images/forge/pwned.png"/> 
+</figure>
+
+<h2 id="introduction">Introduction</h2>
+<ul>
+<li>what you will learn from this machine.</li>
+<li>SSRF, FTP-web-browser, SSH-keys, Python-debugger.</li>
+</ul>
+<blockquote>
+<p>First Don&rsquo;t forget to add IP of the machine to <code>/etc/hosts</code><br>
+<code>$ sudo echo &quot;10.10.11.111&quot; &gt;&gt; /etc/hosts</code></p>
+</blockquote>
+<h3 id="recon">Recon</h3>
+<ol>
+<li>
+<p>First thing to do is to check for open ports using <code>nmap</code>
+<figure>
+    <img src="/Images/forge/nmap.png"/> 
+</figure>
+</p>
+</li>
+<li>
+<p>Let&rsquo;s Check port <code>80/tcp</code> website <figure>
+    <img src="/Images/forge/upload.png"/> 
+</figure>
+
+Ok!!! we have a Gallery with upload page. that we can upload from local or from URL.
+** if we have upload page it Direct us to search for <code>SSRF, LFI, RFI</code> most.**</p>
+</li>
+<li>
+<p>Started Directory brute-forcing and found only 3 results.
+<code>/uploads</code> -&gt; Lead me to 404 Not Found.
+<code>/Static</code> -&gt; Lead me to CSS/JS/Images files. and no thing important in them.
+<code>/upload</code> -&gt; Allow me to upload files.</p>
+</li>
+<li>
+<p>After that I Started VHOSTS Enumeration using <code>ffuf</code></p>
+</li>
+</ol>
+<pre><code>ffuf -u http://forge.htb/ -H &quot;Host: FUZZ.forge.htb&quot; -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -t 200 -mc 200 -v
+</code></pre><p>I got only one <figure>
+    <img src="/Images/forge/vhost.png"/> 
+</figure>
+
+So i added it to <code>/etc/hosts</code> -&gt; <code>admin.forge.htb</code></p>
+<ol start="5">
+<li>Now let&rsquo;s access it from browser <figure>
+    <img src="/Images/forge/admin-web.png"/> 
+</figure>
+</li>
+<li>Ok!! Now i gathered enough Information About Machine no thing to gather more.</li>
+</ol>
+<hr>
+<h3 id="footholding">Footholding</h3>
+<ul>
+<li>As we found before <code>http://forge.htb/upload</code> allow us to upload files or URLs.</li>
+<li>First i started to check for upload file and it give me link to access it. <figure>
+    <img src="/Images/forge/file-upload.png"/> 
+</figure>
+</li>
+<li>The problem is the file &amp; ext of file replaced with random name, and interact with it as image only. so i can&rsquo;t run my script successfully <figure>
+    <img src="/Images/forge/file-upload2.png"/> 
+</figure>
+</li>
+<li>After that, I tested Upload from URL and it works for default images.</li>
+<li>Now, Started to test for <code>SSRF</code> , first tested <code>http://127.0.0.1</code>, <code>http://localhost</code> and got blacklisted
+<figure>
+    <img src="/Images/forge/localhost.png"/> 
+</figure>
+</li>
+<li>But when tried <code>http://127.1/</code> accepted, good bypassed blacklist <figure>
+    <img src="/Images/forge/SSRF.png"/> 
+</figure>
+</li>
+<li>Now I knew it&rsquo;s a SSRF, we can access <code>localhost</code></li>
+<li>Let&rsquo;s check VHOST which need only local host access <code>http://admin.forge.htb/</code> <figure>
+    <img src="/Images/forge/admin-blcklist.png"/> 
+</figure>
+</li>
+<li>It&rsquo;s blacklisted, as we knew that URL interact with Upper&amp; Lower case as same.
+<figure>
+    <img src="/Images/forge/admin-bypass.png"/> 
+</figure>
+
+we bypassed it with easiest way xD.</li>
+<li>Now we need to see the content of this Link. browser view it as image so will not view it , I used <code>burp suite</code> to get content as txt not rendered so can read it <figure>
+    <img src="/Images/forge/admin-page.png"/> 
+</figure>
+</li>
+<li>Okey we got content of <code>admin.forge.htb</code> page and we have 2 dirs on it.</li>
+<li>Checking first one by uploading URL<code>http://ADMIN.FORGE.HTB/announcements</code> <figure>
+    <img src="/Images/forge/ftp-data.png"/> 
+</figure>
+
+from this page we got some useful things.</li>
+</ul>
+<ol>
+<li>There is an internal ftp server <code>21/tcp ftp filtered</code> that i found in port scanning.</li>
+<li>Credentials for this server <code>user:heightofsecurity123!</code></li>
+<li>Server support more protocols for upload <code>ftp, ftps, http, https</code></li>
+<li>there is an parameter <code>?u=</code> in <code>/upload</code> page for admin VHOST</li>
+</ol>
+<ul>
+<li>
+<p>So i searched for how to access ftp server from URL and got resource for this one &ldquo;<a href="https://www.timeatlas.com/ftp-web-browser/%22">https://www.timeatlas.com/ftp-web-browser/&quot;</a></p>
+</li>
+<li>
+<p>Here&rsquo;s a payload to access internal ftp server with Cred from localhost.
+<code>http://ADMIN.FORGE.HTB/upload?u=ftp://user:heightofsecurity123!@127.1</code>
+<figure>
+    <img src="/Images/forge/ftp-access.png"/> 
+</figure>
+
+this ftp server access <code>/home/user</code> so i checked if i can read <code>ssh key</code> for user.</p>
+</li>
+<li>
+<p>First step to check for <code>/.ssh</code> folder.</p>
+</li>
+<li>
+<p>Second step to read  <code>id_rsa</code> key for user with Payload <code>http://ADMIN.FORGE.HTB/upload?u=ftp://user:heightofsecurity123!@127.1/.ssh/id_rsa</code>
+i works and i got key for user.</p>
+</li>
+</ul>
+<hr>
+<h3 id="privilege-escalation">Privilege Escalation</h3>
+<ul>
+<li>Now let&rsquo;s ssh for user and check for our permissions. <figure>
+    <img src="/Images/forge/user-access.png"/> 
+</figure>
+</li>
+<li>Okey!!! we can run only one python script as root.</li>
+<li>After reading it <figure>
+    <img src="/Images/forge/script.png"/> 
+</figure>
+</li>
+<li>Let me Explain this script in short steps.</li>
+</ul>
+<ol>
+<li>first this script is opening a local connection in random port.</li>
+<li>I can connect to this connection from local only.</li>
+<li>To start connection it request password from me <code>secretadminpassword</code></li>
+<li>this script didn&rsquo;t validate user input xD which mean we can carsh it with and input not in it&rsquo;s options.</li>
+</ol>
+<ul>
+<li>Let&rsquo;s give a try for that.</li>
+</ul>
+<ol>
+<li>I opened 2 shells for user.</li>
+<li>From first shell i ran script <code>sudo /usr/bin/python3 /opt/remote-manage.py</code></li>
+<li>From second shell i connected to it. <code>echo &quot;secretadminpassword&quot; | nc 127.0.0.1 PORT</code> *Change port with random port you got from 1 shell *</li>
+<li>From second shell will enter <code>test</code> then interpret connection with <code>ctrl+c</code></li>
+<li>Back to first shell will find it open <code>(Pdb)</code>  it&rsquo;s a python debugger.</li>
+<li>I can open shell from this point <code>(Pdb) import os; os.system(&quot;/bin/sh&quot;)</code>
+<figure>
+    <img src="/Images/forge/root.png"/> 
+</figure>
+
+<a href="https://gtfobins.github.io/gtfobins/pdb/">pdb</a> for last payload
+Machine Rooted Successfully&hellip;. Congrats.</li>
+</ol>
+<h3 id="summary">Summary</h3>
+<ol>
+<li>Recon phase
+<ul>
+<li>got 2 open ports &amp; 1 filtered</li>
+<li>got Upload page which is Vulnerable to SSRF</li>
+<li>got VHOST in site <code>admin</code></li>
+</ul>
+</li>
+<li>Footholding
+<ul>
+<li>Access <code>admin</code> from localhost and got Cred for an internal ftp server</li>
+<li>Accessed ftp server and got <code>user</code> ssh key and accessed him.</li>
+</ul>
+</li>
+<li>privEsc
+<ul>
+<li>Checked for sudo permissions for <code>user</code> found only one script</li>
+<li>understood it and bypassed it with python debugger.</li>
+<li>Rooted!!.</li>
+</ul>
+</li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>

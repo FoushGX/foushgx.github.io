@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HTB-Medium on FoushGX</title>
+    <link>https://foushgx.github.io/tags/htb-medium/</link>
+    <description>Recent content in HTB-Medium on FoushGX</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 22 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://foushgx.github.io/tags/htb-medium/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Forge - HTB</title>
+      <link>https://foushgx.github.io/htb/forge/</link>
+      <pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://foushgx.github.io/htb/forge/</guid>
+      <description>Hello Everyone,Today, I&amp;rsquo;ll show you how i pwned Forge machine in details.   Introduction  what you will learn from this machine. SSRF, FTP-web-browser, SSH-keys, Python-debugger.   First Don&amp;rsquo;t forget to add IP of the machine to /etc/hosts
+$ sudo echo &amp;quot;10.10.11.111&amp;quot; &amp;gt;&amp;gt; /etc/hosts
+ Recon   First thing to do is to check for open ports using nmap     Let&amp;rsquo;s Check port 80/tcp website   Ok!</description>
+    </item>
+    
+  </channel>
+</rss>

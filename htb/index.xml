@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Htbs on FoushGX</title>
+    <link>https://foushgx.github.io/htb/</link>
+    <description>Recent content in Htbs on FoushGX</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 05 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://foushgx.github.io/htb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Horizontall - HTB</title>
+      <link>https://foushgx.github.io/htb/horizontall/</link>
+      <pubDate>Sat, 05 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://foushgx.github.io/htb/horizontall/</guid>
+      <description>Hello everyone,Here I will explain how i managed to pwn Horizontall machine from HTB.   Recon  I started with nmap scanning for port scanning. what i found is just 2 ports:  22/tcp ssh, 80/tcp nginx 1.14.0 Let&amp;rsquo;s check port 80  Don&#39;t forget to add Machine-IP to `/etc/hosts` as root run this -&amp;gt; echo &amp;quot;10.10.11.105 horizontall.htb&amp;quot; &amp;gt;&amp;gt; /etc/hosts  I enumerated site but found nothing.  Here i Decided to do directory brute-focrcing      Found nothing too.</description>
+    </item>
+    
+    <item>
+      <title>Forge - HTB</title>
+      <link>https://foushgx.github.io/htb/forge/</link>
+      <pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://foushgx.github.io/htb/forge/</guid>
+      <description>Hello Everyone,Today, I&amp;rsquo;ll show you how i pwned Forge machine in details.   Introduction  what you will learn from this machine. SSRF, FTP-web-browser, SSH-keys, Python-debugger.   First Don&amp;rsquo;t forget to add IP of the machine to /etc/hosts
+$ sudo echo &amp;quot;10.10.11.111&amp;quot; &amp;gt;&amp;gt; /etc/hosts
+ Recon   First thing to do is to check for open ports using nmap     Let&amp;rsquo;s Check port 80/tcp website   Ok!</description>
+    </item>
+    
+    <item>
+      <title>Previse - HTB</title>
+      <link>https://foushgx.github.io/htb/previse/</link>
+      <pubDate>Sat, 08 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://foushgx.github.io/htb/previse/</guid>
+      <description>Hello everyone,Today i&amp;rsquo;ll show you how i pwned Previse Machine.   Recon Steps first of all after we got the ip we made a port scanning to know which ports are open&amp;hellip; nmap -sV -sC IP  -&amp;gt;   okey we have only 2 ports 22,80..
+let&amp;rsquo;s check port 80 first.. first thing we found was a login page so i tried defaults Cred. admin:admin ooooh, it works and we logged as admin.</description>
+    </item>
+    
+  </channel>
+</rss>
