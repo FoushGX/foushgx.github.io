@@ -3,8 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://foushgx.github.io/htb/devzat/</loc>
+    <lastmod>2022-03-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://foushgx.github.io/</loc>
-    <lastmod>2022-02-05T00:00:00+00:00</lastmod>
+    <lastmod>2022-03-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://foushgx.github.io/tags/htb-medium/</loc>
+    <lastmod>2022-03-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://foushgx.github.io/htb/</loc>
+    <lastmod>2022-03-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://foushgx.github.io/tags/</loc>
+    <lastmod>2022-03-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://foushgx.github.io/tags/walkthrough/</loc>
+    <lastmod>2022-03-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -18,27 +43,7 @@
   </url>
   
   <url>
-    <loc>https://foushgx.github.io/htb/</loc>
-    <lastmod>2022-02-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://foushgx.github.io/tags/</loc>
-    <lastmod>2022-02-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://foushgx.github.io/tags/walkthrough/</loc>
-    <lastmod>2022-02-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://foushgx.github.io/htb/forge/</loc>
-    <lastmod>2022-01-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://foushgx.github.io/tags/htb-medium/</loc>
     <lastmod>2022-01-22T00:00:00+00:00</lastmod>
   </url>
   

