@@ -6,7 +6,17 @@
     <description>Recent content in HTB-Easy on FoushGX</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 05 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://foushgx.github.io/tags/htb-easy/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 23 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://foushgx.github.io/tags/htb-easy/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Backdoor - HTB</title>
+      <link>https://foushgx.github.io/htb/backdoor/</link>
+      <pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://foushgx.github.io/htb/backdoor/</guid>
+      <description>Hello everyone, Today i&amp;rsquo;ll show you how i pwned backdoor Machine&amp;hellip;   Recon Steps First of all after getting the IP i start a port scanning to know which ports are open&amp;hellip; nc -sC -sV IP   okey we have only 2 ports 22,80&amp;hellip;
+if we see in nmap above, port 80 have Apache 2.4.41, wordpress so I checked 80, it was a website with nothing on it&amp;hellip;</description>
+    </item>
+    
     <item>
       <title>Horizontall - HTB</title>
       <link>https://foushgx.github.io/htb/horizontall/</link>

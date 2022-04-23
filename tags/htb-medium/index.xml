@@ -13,7 +13,7 @@
       <pubDate>Sat, 12 Mar 2022 00:00:00 +0000</pubDate>
       
       <guid>https://foushgx.github.io/htb/devzat/</guid>
-      <description>Devzat - HTB Hello everyone, Todey will explain to you how i pwned &amp;ldquo;Devzat&amp;rdquo; Machine from HTB.   Introduction This is a great machine it&amp;rsquo;s not easy at all and need you to focus in each step before execute. In this machine you will learn many new things:
+      <description>Hello everyone, Todey will explain to you how i pwned &amp;ldquo;Devzat&amp;rdquo; Machine from HTB.   Introduction This is a great machine it&amp;rsquo;s not easy at all and need you to focus in each step before execute. In this machine you will learn many new things:
  RCE from parsing Json Data &amp;ldquo;Deserialization&amp;rdquo; Port Forwarding Source code review  [01] Recon  First I started with nmap to check open ports on the machine.</description>
     </item>
     
